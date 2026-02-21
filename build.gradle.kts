@@ -1,7 +1,7 @@
 plugins {
     java
     `maven-publish`
-    id("org.springframework.boot") version "3.5.7"
+    id("org.springframework.boot") version "4.0.3"
     id("io.spring.dependency-management") version "1.1.7"
 }
 
@@ -13,6 +13,8 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+    withSourcesJar()
+    withJavadocJar()
 }
 
 configurations {
@@ -31,9 +33,15 @@ val springBootStarterVersion = "4.0.3"
 val jakartaPersistenceVersion = "3.2.0"
 val junitVersion = "6.0.1"
 
+val repoOwnerName = "Digital-Hustle"
+val repoName = "exception-starter"
+
 dependencies {
     // starter
     implementation("org.springframework.boot:spring-boot-starter-webmvc:$springBootStarterVersion")
+
+    // processor
+    implementation("org.springframework.boot:spring-boot-configuration-processor:$springBootStarterVersion")
 
     // lombok
     compileOnly("org.projectlombok:lombok:$lombokVersion")
@@ -52,10 +60,39 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
+            pom {
+                name.set("Exception Handling Spring Boot Starter")
+                description.set(project.description)
+                url.set("https://github.com/$repoOwnerName/$repoName")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("DanyaChetvyrtov")
+                        name.set("dasemenov")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/$repoOwnerName/$repoName.git")
+                    developerConnection.set("scm:git:ssh://github.com/$repoOwnerName/$repoName.git")
+                    url.set("https://github.com/$repoOwnerName/$repoName")
+                }
+            }
         }
     }
     repositories {
-        mavenLocal()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/$repoOwnerName/$repoName")
+            credentials {
+                username = project.findProperty("gpr.user")?.toString() ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key")?.toString() ?: System.getenv("TOKEN")
+            }
+        }
     }
 }
 
