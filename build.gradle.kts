@@ -9,6 +9,12 @@ group = "ru.digital-hustle"
 version = "0.0.1-SNAPSHOT"
 description = "Spring boot dependency for convenient exception handling"
 
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:4.0.3")
+    }
+}
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
@@ -28,8 +34,11 @@ repositories {
 }
 
 // versions
+val springVersion = "6.2.15"
+val springBootVersion = "4.0.3"
 val lombokVersion = "1.18.38"
-val springBootStarterVersion = "4.0.3"
+val jacksonVersion = "2.20"
+val slf4jVersion = "2.0.17"
 val jakartaPersistenceVersion = "3.2.0"
 val junitVersion = "6.0.1"
 
@@ -38,20 +47,25 @@ val repoName = "exception-starter"
 
 dependencies {
     // starter
-    implementation("org.springframework.boot:spring-boot-starter-webmvc:$springBootStarterVersion")
+    compileOnly("org.springframework:spring-web:$springVersion")
+    compileOnly("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
+
+    compileOnly("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
+    compileOnly("org.slf4j:slf4j-api:${slf4jVersion}")
 
     // processor
-    implementation("org.springframework.boot:spring-boot-configuration-processor:$springBootStarterVersion")
+    implementation("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
 
     // lombok
     compileOnly("org.projectlombok:lombok:$lombokVersion")
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
 
     // any
-    implementation("jakarta.persistence:jakarta.persistence-api:$jakartaPersistenceVersion")
+    compileOnly("jakarta.persistence:jakarta.persistence-api:${jakartaPersistenceVersion}")
 
     // test
-    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test:$springBootStarterVersion")
+    testImplementation ("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    testImplementation ("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:$junitVersion")
 }
 
