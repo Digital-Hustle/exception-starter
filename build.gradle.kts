@@ -40,6 +40,7 @@ val lombokVersion = "1.18.38"
 val jacksonVersion = "2.20"
 val slf4jVersion = "2.0.17"
 val jakartaPersistenceVersion = "3.2.0"
+val apacheCommonsVersion = "3.18.0"
 val junitVersion = "6.0.1"
 
 val repoOwnerName = "Digital-Hustle"
@@ -50,8 +51,8 @@ dependencies {
     compileOnly("org.springframework:spring-web:$springVersion")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
 
-    compileOnly("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
-    compileOnly("org.slf4j:slf4j-api:${slf4jVersion}")
+    compileOnly("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    compileOnly("org.slf4j:slf4j-api:$slf4jVersion")
 
     // processor
     implementation("org.springframework.boot:spring-boot-configuration-processor:$springBootVersion")
@@ -61,7 +62,8 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
 
     // any
-    compileOnly("jakarta.persistence:jakarta.persistence-api:${jakartaPersistenceVersion}")
+    compileOnly("jakarta.persistence:jakarta.persistence-api:$jakartaPersistenceVersion")
+    implementation("org.apache.commons:commons-lang3:$apacheCommonsVersion")
 
     // test
     testImplementation ("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
